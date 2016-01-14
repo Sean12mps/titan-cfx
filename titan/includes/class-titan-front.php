@@ -7,6 +7,7 @@ class Titan_Front {
 
 	public $options = array();
 
+	public $options_removal = array();
 
 	public $options_index = 0;
 
@@ -20,9 +21,10 @@ class Titan_Front {
 
 			$this->loop_options();
 
-			// $this->titan_control_special_pages();
+			add_action( 'wp_enqueue_scripts', array( $this, 'titan_remove_hooks' ) );
 
 			add_action( 'wp_enqueue_scripts', array( $this, 'titan_enqueue_template_styles' ) );
+
 			add_action( 'calibrefx_before_post_title', array( $this, 'titan_control_special_pages' ) );
 
 		}
@@ -36,7 +38,11 @@ class Titan_Front {
 
 		$options = get_field( 'hook_relations', 'option' );
 
+		$options_removal = get_field( 'hook_removal', 'option' );
+
 		$this->options = $options;
+
+		$this->options_removal = $options_removal;
 
 		
 	}
@@ -120,6 +126,24 @@ class Titan_Front {
 		$content = ob_get_clean();
 
 		echo $content;
+
+
+	}
+
+
+	public function titan_remove_hooks () {
+
+		$options_removal = $this->options_removal;
+
+		if ( $options_removal ) {
+
+			foreach ( $options_removal as $idx => $removal ) {
+
+				remove_action( $removal['name_action'], $removal['name_hook'], $removal['priority'] );
+
+			}
+
+		}
 
 
 	}
