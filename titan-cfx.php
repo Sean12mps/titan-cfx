@@ -18,6 +18,7 @@ License:
 
 // 	Includes
 include_once( dirname( __FILE__ ) . '/titan/titan.php' );
+include_once( dirname( __FILE__ ) . '/vc_extend/extend-vc.php' );
 
 
 // 	Initialize
